@@ -68,13 +68,11 @@ app.post('/add-movie', (req,res) => {
     movies.push(new_movie)
     fs.writeFileSync('movies.json', JSON.stringify(movies))
     res.status(200).send(`Movie ${name} was added`)
-});
-
-
-app.get('*', function (req, res) {
-    res.status(400).send(`Endpoint ${req.url} does not exit`)
 })
 
-app.post('*', function (req, res) {
-    res.status(400).send(`Endpoint ${req.url} does not exit`)
+
+app.use((req, res, next) => {
+    res.status(404).json({
+        message: `Endpoint ${req.url} does not exit`
+    })
 })
